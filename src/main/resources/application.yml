@@ -3,12 +3,6 @@ spring:
     active: dev
   application:
     name: java-stack-test-task
-  flyway:
-    schemas: public_flyway
-    enabled: true
-    url: jdbc:postgresql://localhost:5432/java-stack-test-task-db
-    user: ${spring.r2dbc.username}
-    password: ${spring.r2dbc.password}
   datasource:
     schema: classpath:db/schema.sql
     initialization-mode: always
@@ -20,6 +14,12 @@ spring:
     url: r2dbc:postgresql://localhost:5432/java-stack-test-task-db
     username: postgres
     password: postgres
+  flyway:
+    schemas: public_flyway
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/java-stack-test-task-db
+    user: ${spring.r2dbc.username}
+    password: ${spring.r2dbc.password}
 logging:
   level:
     root: info

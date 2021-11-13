@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import org.flywaydb.core.Flyway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 
 @Configuration
+@Profile("!test")
 @AllArgsConstructor
 public class FlywayConfig {
 
