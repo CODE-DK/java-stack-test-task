@@ -1,6 +1,20 @@
 version: "3.8"
 
 services:
+  # APP
+  java-stack-test-task:
+    build: .
+    container_name: java-stack-test-task
+    restart: unless-stopped
+    environment:
+       DB_HOST: java-stack-test-task-db
+       DB_PORT: 5432
+       DB_USER: postgres
+       DB_PASS: postgres
+    ports:
+      - "8080:8080"
+    depends_on:
+      - java-stack-test-task-db
   # DATABASE
   java-stack-test-task-db:
     image: postgres:10.2

@@ -35,17 +35,13 @@ The application contains the following REST APIs
 
 ```
 1. GET /countries - Get All Countries
-
 2. PUT /countries/{countryCode}?action=increment - Update country counter by country code.
 ```
 
 ### Loading
 This app contains Dockerfile, so you can use k8s to scale your instances.
-To run the app with Docker check that Docker has already installed and execute the following commands.
+To run the app with locally please check that Docker has already installed and execute the following command.
 
 ```
-    docker build --file {{path-to-Dockerfile}}
-    docker run -p 8080:8080 -p 5432:5432 java-stack-test-task
+    docker-compose up
 ```
-
-
