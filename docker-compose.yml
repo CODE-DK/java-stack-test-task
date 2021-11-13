@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  # DATABASE
+  java-stack-test-task-db:
+    image: postgres:10.2
+    container_name: java-stack-test-task-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: java-stack-test-task-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.volume/postgres:/data/postgres

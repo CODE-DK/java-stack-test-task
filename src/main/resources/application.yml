@@ -1,0 +1,26 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: java-stack-test-task
+  flyway:
+    schemas: public_flyway
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/java-stack-test-task-db
+    user: ${spring.r2dbc.username}
+    password: ${spring.r2dbc.password}
+  datasource:
+    schema: classpath:db/schema.sql
+    initialization-mode: always
+    driver-class-name: org.postgresql.Driver
+---
+spring:
+  profiles: dev
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/java-stack-test-task-db
+    username: postgres
+    password: postgres
+logging:
+  level:
+    root: info
+    org.springframework.data.r2dbc: debug
