@@ -1,6 +1,5 @@
 package org.example.java.stack.test.task.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.example.java.stack.test.task.container.DataSourceConfig;
 import org.example.java.stack.test.task.dto.CountryDTO;
 import org.junit.Assert;
@@ -17,7 +16,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.List;
 
-@Slf4j
 @DirtiesContext
 @ActiveProfiles("test")
 @AutoConfigureWebTestClient
@@ -31,8 +29,7 @@ public class CountryControllerTest {
     @Test
     public void testGetCountries() {
         webTestClient.get()
-                .uri("/countries")
-                .header("Content-type", "application/json").exchange()
+                .uri("/countries").exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .expectBodyList(CountryDTO.class)
@@ -48,26 +45,16 @@ public class CountryControllerTest {
     }
 
     @Test
-    public void testIncrementCountry_WhenWrongActionTag() {
-        webTestClient.put()
-                .uri("/countries/{countryCode}?action={action}", "AU", "justDoIt")
-                .header("Content-type", "application/json").exchange()
-                .expectStatus().isBadRequest();
-    }
-
-    @Test
     public void testIncrementCountry_WhenUnknownCountryCode() {
-        webTestClient.put()
-                .uri("/countries/{countryCode}?action={action}", "BIBA", "increment")
-                .header("Content-type", "application/json").exchange()
-                .expectStatus().isBadRequest();
+        webTestClient.patch()
+                .uri("/countries/{countryCode}", "BIBA").exchange()
+                .expectStatus().isNoContent();
     }
 
     @Test
     public void testIncrementCountry() {
-        webTestClient.put()
-                .uri("/countries/{countryCode}?action={action}", "AU", "increment")
-                .header("Content-type", "application/json").exchange()
+        webTestClient.patch()
+                .uri("/countries/{countryCode}", "AU").exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .expectBody(CountryDTO.class)
