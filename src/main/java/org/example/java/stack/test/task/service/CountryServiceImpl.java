@@ -17,29 +17,27 @@ public class CountryServiceImpl implements CountryService {
 
     public static final Map<String, AtomicLong> BUFFER = new ConcurrentHashMap<>();
 
+    static {
+        BUFFER.put("DE", new AtomicLong(0));
+        BUFFER.put("RU", new AtomicLong(0));
+        BUFFER.put("EU", new AtomicLong(0));
+        BUFFER.put("CH", new AtomicLong(0));
+    }
+
     @Override
     public Mono<CountryDTO> incrementByCountryCode(@NotNull String countryCode) {
-        CountryDTO countryDTO = null;
-        synchronized (BUFFER) {
-            AtomicLong counter = BUFFER.getOrDefault(countryCode, new AtomicLong(0L));
-            countryDTO = CountryDTO.builder()
-                    .countryCode(countryCode)
-                    .counterValue(counter.incrementAndGet())
-                    .build();
-            BUFFER.put(countryCode, counter);
-        }
+        CountryDTO countryDTO = CountryDTO.builder()
+                .countryCode(countryCode)
+                .counterValue(BUFFER.get(countryCode).incrementAndGet())
+                .build();
         return Mono.just(countryDTO);
     }
 
     @Override
     public Flux<CountryDTO> getAllCountries() {
-        Flux<CountryDTO> flux = null;
-        synchronized (BUFFER) {
-            flux = Flux.fromStream(BUFFER.entrySet().stream().map(entry -> CountryDTO.builder()
-                    .countryCode(entry.getKey())
-                    .counterValue(entry.getValue().longValue())
-                    .build()));
-        }
-        return flux;
+        return Flux.fromStream(BUFFER.entrySet().stream().map(entry -> CountryDTO.builder()
+                .countryCode(entry.getKey())
+                .counterValue(entry.getValue().longValue())
+                .build()));
     }
 }
